@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { TextField, DialogTitle, Dialog, List, ListItem, Avatar, Typography, Button } from '@material-ui/core'
+import { TextField, Typography, Button } from '@material-ui/core'
 import { initUser } from '../reducers/user'
 import { connect } from 'react-redux'
 
@@ -35,9 +35,10 @@ const LoginPage = ({initUser}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        initUser({
+        let user = {
             username
-        })
+        }
+        initUser(user)
     }
 
     return (
@@ -45,10 +46,10 @@ const LoginPage = ({initUser}) => {
             <Typography variant="h4">Enter username</Typography>
             <form onSubmit={handleSubmit}>
                 <TextField value={username} onChange={(e) => setUsername(e.target.value)} id="filled-basic" label="Filled" variant="filled" />
-                <Button variant="contained" color="primary">Submit</Button>
+                <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">Submit</Button>
             </form>
         </LoginPageStyled>
     )
 }
 
-export default connect(null, { initUser })(LoginPage)
+export default connect(null, {initUser})(LoginPage)

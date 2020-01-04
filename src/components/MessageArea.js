@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Chip, Avatar } from '@material-ui/core'
-import { new_msg } from '../reducers/messages'
+import { recieve_msg } from '../reducers/messages'
+import socketIOClient from 'socket.io-client'
+const io = socketIOClient('http://localhost:8000')
 
 const MessageAreaStyled = styled.div`
     padding-bottom: 80px;
@@ -27,22 +29,22 @@ const MessageArea = (props) => {
 
     const loggedUser = props.user.username
     const messagesEndRef = useRef(null)
-    
-
-    const test = () => {
-        props.new_msg({msg: 'New message' + props.msgs.length, from: 'Lemon'})
-    }
 
 
     useEffect(() => {
         messagesEndRef.current.scrollIntoView()
     }, [props.msgs])
 
-
+    useEffect(() => {
+        io.on('new msg', (msg) => {
+            console.log(msg)
+            props.recieve_msg(msg)
+        })
+    }, [])
 
     return (
         
-        <MessageAreaStyled onClick={test}> 
+        <MessageAreaStyled> 
                 {props.msgs ? (
                     props.msgs.map((item, index) => (
                         <div className={`msg ${ loggedUser ? (item.from === loggedUser ? 'myMsg' : '') : null}`} key={index} >
@@ -64,4 +66,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {new_msg})(MessageArea)
+export default connect(mapStateToProps, {recieve_msg})(MessageArea)

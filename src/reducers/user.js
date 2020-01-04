@@ -1,3 +1,7 @@
+import socketIOClient from "socket.io-client"
+import { loginUser } from '../services/user'
+const io = socketIOClient('http://localhost:8000')
+
 
 const reducer = (state = null, action) => {
     switch(action.type) {
@@ -12,16 +16,20 @@ const reducer = (state = null, action) => {
 }
 
 export const initUser = (user) => {
-    return {
-        type: 'INIT_USER',
-        data: user
+
+    return async (dispatch) => {
+        const loggedUser = await loginUser(user)
+        
+        dispatch({
+            type: 'INIT_USER',
+            data: loggedUser
+        })
     }
 }
 
 export const logout = () => {
 
-    window.sessionStorage.removeItem('user')
-    
+    io.emit('logout')
     return {
         type: 'LOGOUT',
         data: null

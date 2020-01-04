@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import ChatPage from './pages/ChatPage'
 import LoginPage from './pages/LoginPage'
 import { connect } from 'react-redux'
-
+import socketIOClient from "socket.io-client"
 
 const AppStyled = styled.div`
   height: 100vh;
@@ -13,15 +13,16 @@ const AppStyled = styled.div`
   padding-bottom: 50px;
 `
 
-const NotFound = () => (
-  <>
-    <h1>Page not found</h1>
-    <Link to="/">Go home</Link>
-  </>
-)
+// const NotFound = () => (
+//   <>
+//     <h1>Page not found</h1>
+//     <Link to="/">Go home</Link>
+//   </>
+// )
 
 
 const App = ({user}) => {
+
   return (
     <AppStyled className="App">
 
